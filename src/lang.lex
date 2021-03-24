@@ -59,6 +59,10 @@
         [`\\|\\|`,                  `return 'LOGICAL_OR'`],
         [`&&`,                      `return 'LOGICAL_AND'`],
     
+        /* ------------ Equality Operators (==, !=) ------------ */
+
+        [`(=|!)=`,                  `return 'EQUALITY_OPERATOR'`],
+
         /* ------------ Assignment Operators (=, *=, /=, +=, -=) ------------ */
 
         [`=`,                       `return 'SIMPLE_ASSIGN'`],
@@ -68,9 +72,6 @@
 
         [`(\\d+(\\.\\d+)?)`,        `return 'NUMBER'`],
 
-        /* ------------ Equality Operators (==, !=) ------------ */
-
-        [`(=|!)=`,                  `return 'EQUALITY_OPERATOR'`],
 
         /* ------------ Math Operators (+, -, *, /) ------------ */
 

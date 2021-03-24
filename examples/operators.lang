@@ -1,0 +1,81 @@
+/**
+ * Available logical, equality, relational, math operators
+ * Built-in precedence levels (lowest to highest):
+ * - ||
+ * - &&
+ * - ==, !=
+ * - >, >=, <, <=
+ * - +, -
+ * - *, /
+ * - +expr, -expr
+ *
+ * LogicalORExpression
+ * : LogicalANDExpression
+ * | LogicalORExpression LOGICAL_OR LogicalANDExpression
+ *
+ * LogicalANDExpression
+ * : EqualityExpression
+ * | LogicalANDExpression LOGICAL_AND EqualityExpression
+ *
+ * EqualityExpression
+ * : RelationalExpression
+ * | EqualityExpression EQUALITY_OPERATOR RelationalExpression
+ *
+ * RelationalExpression
+ * : AdditiveExpression
+ * | RelationalExpression RELATIONAL_OPERATOR AdditiveExpression
+ *
+ * AdditiveExpression
+ * : MultiplicativeExpression
+ * | AdditiveExpression ADDITIVE_OPERATOR MultiplicativeExpression
+ *
+ * MultiplicativeExpression
+ * : UnaryExpression
+ * | MultiplicativeExpression MULTIPLICATIVE_OPERATOR UnaryExpression
+ *
+ * UnaryExpression
+ * : PrimaryExpression
+ * | CallExpression
+ * | ADDITIVE_OPERATOR UnaryExpression
+ *
+ * PrimaryExpression
+ * : LeftHandSideExpression
+ * | NewExpression
+ * | Literal
+ * | ArrayLiteral
+ * | ObjectLiteral
+ * | ParenthesizedExpression LambdaTail
+ */
+
+let x = 0, y = 1, ans;
+
+// Unary
+ans = -x;
+ans = +y;
+
+// Multiplicative
+ans = x * y;
+ans = x / y;
+
+// Additive
+ans = x + y;
+ans = x - y;
+
+// Relational
+ans = x > y;
+ans = x >= y;
+ans = x < y;
+ans = x <= y;
+
+// Equality
+ans = x == y;
+ans = x != y;
+
+// Logical AND
+ans = x && y;
+
+// Logical OR
+ans = x || y;
+
+// Combination
+ans = (x == y) || (x + y) >= -x;
