@@ -1,0 +1,71 @@
+/**
+ * Function declaration and calls
+ *
+ * FunctionDeclaration
+ * : FN Identifier LPAREN OptFormalParameterList RPAREN BlockStatement
+ *
+ * OptFormalParameterList
+ * : FormalParameterList
+ * | // empty
+ *
+ * FormalParameterList
+ * : Identifier
+ * | FormalParameterList COMMA, Identifier
+ *
+ * BlockStatement
+ * : BlockOrObject
+ *
+ * BlockOrObject
+ * : LCURLY OptBlockOrObjectEntries RCURLY
+ *
+ * OptBlockOrObjectEntries
+ * : StatementList
+ * | PropertyList OptComma
+ * | // empty
+ *
+ * StatementList
+ * : Statement
+ * | StatementList Statement
+ *
+ * Statement
+ * : BlockStatement
+ * | EmptyStatement
+ * | VariableDeclaration
+ * | FunctionDeclaration
+ * | ExpressionStatement
+ * | IfStatement
+ * | IterationStatement
+ * | ReturnStatement
+ * | BreakStatement
+ * | ContinueStatement
+ * | ClassDeclaration
+ *
+ * PropertyList
+ * : PropertyAssignment
+ * | PropertyList COMMA PropertyAssignment
+ *
+ * PropertyAssignment
+ * : PropertyName COLON AssignmentExpression
+ *
+ * PropertyName
+ * : StringLiteral
+ * | Keyword
+ * | NumericLiteral
+ * | Identifier
+ */
+
+// Function declaration, no parameters
+fn no_params() {}
+
+// Function declaration, one parameter
+fn one_param(one)
+{
+    print(one);
+}
+
+// Function declaration, two parameters
+fn point2d(x, y)
+{
+    print(x);
+    print(y);
+}

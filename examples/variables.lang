@@ -1,13 +1,63 @@
-// Variable declarations
-let x, y, z;
+/**
+ * Variable declaration and assignment
+ *
+ * VariableDeclaration
+ * : VariableDeclarationListInit SEMICOLON
+ *
+ * VariableDeclarationListInit
+ * : LET VariableDeclarationList
+ *
+ * VariableDeclarationList
+ * : VariableDeclarator
+ * | VariableDeclarationList COMMA VariableDeclarator
+ *
+ * VariableDeclarator
+ * : Identifier VariableInitializer
+ *
+ * VariableInitializer
+ * : SIMPLE_ASSIGN AssignmentExpression
+ * | // empty
+ *
+ * AssignmentExpression
+ * : LogicalORExpression // examples/operators.lang
+ * | LeftHandSideExpression AssignmentOperator AssignmentExpression
+ *
+ * LeftHandSideExpression
+ * : MemberExpression
+ *
+ * MemberExpression
+ * : MemberExpression LBRACKET Expression RBRACKET
+ * | MemberExpression DOT Identifier
+ * | Identifier
+ * | ThisExpression
+ *
+ * AssignmentOperator
+ * : SIMPLE_ASSIGN
+ * | COMPLEX_ASSIGN
+ */
 
-// Variable simple assignments
+// Single variable declaration w/o initial value
+let x;
+
+// Multiple variable declaration w/o initial value
+let y, z;
+
+// Single variable declaration w/ initial value;
+let a = 1;
+
+// Multiple variable declaration w/ initial value
+let b = 2, c = 3;
+
+// Simple assignment
 x = 10;
 y = 5;
 z = 25;
 
-// Variable complex assignments
-x += 2;
-y -= 2;
-z *= 2;
-x /= 2;
+// Complex assignment
+this.x += 2;
+this.y -= 2;
+this.z *= 2;
+this.x /= 2;
+
+// Consecutive variable assignment to the same value
+a = b = c = 5;

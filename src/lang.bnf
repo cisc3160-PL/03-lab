@@ -9,77 +9,84 @@
 /**
  * Creates generic binary expression node.
  */
-function BinaryExpression(left, operator, right) {
-  return {
-    type: 'BinaryExpression',
-    operator,
-    left,
-    right
-  };
+function BinaryExpression(left, operator, right)
+{
+    return {
+        type: 'BinaryExpression',
+        operator,
+        left,
+        right
+    };
 }
 
 /**
  * Creates logical expression node.
  */
-function LogicalExpression(left, operator, right) {
-  return {
-    type: 'LogicalExpression',
-    operator,
-    left,
-    right
-  };
+function LogicalExpression(left, operator, right)
+{
+    return {
+        type: 'LogicalExpression',
+        operator,
+        left,
+        right
+    };
 }
 
 /**
  * Creates an unary expression node.
  */
-function UnaryExpression(operator, argument) {
-  return {
-    type: 'UnaryExpression',
-    operator,
-    argument,
-  };
+function UnaryExpression(operator, argument)
+{
+    return {
+        type: 'UnaryExpression',
+        operator,
+        argument,
+    };
 }
 
 /**
  * Creates a literal node.
  */
-function Literal(typePrefix, value) {
-  return {
-    type: typePrefix + 'Literal',
-    value,
-  };
+function Literal(typePrefix, value)
+{
+    return {
+        type: typePrefix + 'Literal',
+        value,
+    };
 }
 
 /**
  * Creates an If-statement node.
  */
-function IfStatement(test, consequent, alternate) {
-  return {
-    type: 'IfStatement',
-    test,
-    consequent,
-    alternate,
-  };
+function IfStatement(test, consequent, alternate)
+{
+    return {
+        type: 'IfStatement',
+        test,
+        consequent,
+        alternate,
+    };
 }
 
 /**
  * ForPropStatement.
  */
-function ForPropStatement(left, right, body) {
-  if (left.type === 'VariableDeclaration' && left.declarations.length !== 1) {
-    throw new Error(
-      'SyntaxError: Invalid left-hand side in for-prop loop: ' +
-      'Must have a single binding.'
-    );
-  }
+function ForPropStatement(left, right, body)
+{
+    if (left.type === 'VariableDeclaration' && left.declarations.length !== 1)
+    {
+        throw new Error(
+            'SyntaxError: Invalid left-hand side in for-prop loop: ' +
+            'Must have a single binding.'
+        );
+    }
 
-  return {
-    type: 'ForPropStatement',
-    left,
-    right,
-    body,
-  };
+    return {
+        type: 'ForPropStatement',
+        left,
+        right,
+        body,
+    };
 }
 
 /**
@@ -89,54 +96,62 @@ function ForPropStatement(left, right, body) {
  * (x, y) is a sequence expression, however
  * (x, y) -> { ... } is a lambda function.
  */
-function LambdaFunction(paramsNode, body) {
-  let params = paramsNode.type === 'SequenceExpression'
-    ? paramsNode.expressions
-    : [paramsNode];
+function LambdaFunction(paramsNode, body)
+{
+    let params = paramsNode.type === 'SequenceExpression'
+        ? paramsNode.expressions
+        : [paramsNode];
 
-  // Static semantics: validate function parameters.
-  params.forEach(e => {
-    if (e.type !== 'Identifier') {
-      throw new Error(
-        'SyntaxError: Lambda parameters can only be identifiers.'
-      );
+    // Static semantics: validate function parameters.
+    params.forEach(e =>
+    {
+        if (e.type !== 'Identifier')
+        {
+            throw new Error(
+                'SyntaxError: Lambda parameters can only be identifiers.'
+            );
+        }
+    });
+
+    return {
+        type: 'LambdaFunction',
+        params,
+        body,
+    };
+}
+
+function BlockStatement(statements)
+{
+    enforceBlockStatementList(statements);
+    return {
+        type: 'BlockStatement',
+        statements,
+    };
+}
+
+function ObjectLiteral(properties)
+{
+    enforceObjectProperties(properties);
+    return {
+        type: 'ObjectLiteral',
+        properties,
     }
-  });
-
-  return {
-    type: 'LambdaFunction',
-    params,
-    body,
-  };
-}
-
-function BlockStatement(statements) {
-  enforceBlockStatementList(statements);
-  return {
-    type: 'BlockStatement',
-    statements,
-  };
-}
-
-function ObjectLiteral(properties) {
-  enforceObjectProperties(properties);
-  return {
-    type: 'ObjectLiteral',
-    properties,
-  }
 }
 
 /**
  * See `enforceObjectProperties`.
  */
-function enforceBlockStatementList(nodes) {
-  nodes.forEach(node => {
-    if (node.type == 'Property') {
-      throw new Error(
-        'Block: invalid statement.'
-      );
-    }
-  });
+function enforceBlockStatementList(nodes)
+{
+    nodes.forEach(node =>
+    {
+        if (node.type == 'Property')
+        {
+            throw new Error(
+                'Block: invalid statement.'
+            );
+        }
+    });
 }
 
 /**
@@ -144,25 +159,29 @@ function enforceBlockStatementList(nodes) {
  * this function checks that all entries in a block are
  * object properties.
  */
-function enforceObjectProperties(nodes) {
-  nodes.forEach(node => {
-    if (node.type !== 'Property') {
-      throw new Error(
-        'ObjectLiteral: invalid property declaration.'
-      );
-    }
-  });
+function enforceObjectProperties(nodes)
+{
+    nodes.forEach(node =>
+    {
+        if (node.type !== 'Property')
+        {
+            throw new Error(
+                'ObjectLiteral: invalid property declaration.'
+            );
+        }
+    });
 }
 
 /**
  * MemberExpression.
  */
-function MemberExpression(object, property) {
-  return {
-    type: 'MemberExpression',
-    object,
-    property,
-  };
+function MemberExpression(object, property)
+{
+    return {
+        type: 'MemberExpression',
+        object,
+        property,
+    };
 }
 
 %}
@@ -180,41 +199,41 @@ function MemberExpression(object, property) {
  * Main Program.
  */
 Program
-  : StatementList
-    { $$ = {
-        type: 'Program',
-        body: $1,
-      }
-    }
-  ;
+    : StatementList
+        {
+            $$ = {
+                type: 'Program',
+                body: $1,
+            }
+        }
+    ;
 
 /**
  * StatementList.
  */
 StatementList
-  : Statement
-      { $$ = [$1] }
-
-  | StatementList Statement
-      { $1.push($2); $$ = $1 }
-  ;
+    : Statement
+        { $$ = [$1] }
+    | StatementList Statement
+        { $1.push($2); $$ = $1 }
+    ;
 
 /**
  * Statements.
  */
 Statement
-  : BlockStatement
-  | EmptyStatement
-  | VariableDeclaration
-  | FunctionDeclaration
-  | ExpressionStatement
-  | IfStatement
-  | IterationStatement
-  | ReturnStatement
-  | BreakStatement
-  | ContinueStatement
-  | ClassDeclaration
-  ;
+    : BlockStatement
+    | EmptyStatement
+    | VariableDeclaration
+    | FunctionDeclaration
+    | ExpressionStatement
+    | IfStatement
+    | IterationStatement
+    | ReturnStatement
+    | BreakStatement
+    | ContinueStatement
+    | ClassDeclaration
+    ;
 
 /**
  * Class declaration.
@@ -246,23 +265,23 @@ ClassExtends
  * EmptyStatement.
  */
 EmptyStatement
-  : SEMICOLON
-    {
-      $$ = {
-        type: 'EmptyStatement',
-      }
-    }
-  ;
+    : SEMICOLON
+        {
+            $$ = {
+                type: 'EmptyStatement',
+            }
+        }
+    ;
 
 /**
  * BlockStatement.
  */
 BlockStatement
-  : BlockOrObject
-    {
-      $$ = BlockStatement($1)
-    }
-  ;
+    : BlockOrObject
+        {
+            $$ = BlockStatement($1)
+        }
+    ;
 
 /**
  * BlockOrObject.
@@ -278,9 +297,9 @@ BlockStatement
  * statement or expression position.
  */
 BlockOrObject
-  : LCURLY OptBlockOrObjectEntries RCURLY
-    { $$ = $2 }
-  ;
+    : LCURLY OptBlockOrObjectEntries RCURLY
+        { $$ = $2 }
+    ;
 
 /**
  * OptBlockOrObjectEntries.
@@ -288,14 +307,12 @@ BlockOrObject
  * Cover grammar: see `BlockOrObject`.
  */
 OptBlockOrObjectEntries
-  : StatementList
-
-  | PropertyList OptComma
-    { $$ = $1 }
-
-  | /* empty */
-    { $$ = [] }
-  ;
+    : StatementList
+    | PropertyList OptComma
+        { $$ = $1 }
+    | /* empty */
+        { $$ = [] }
+    ;
 
 /**
  * IterationStatement.
@@ -410,43 +427,42 @@ OptExpression
  * FunctionDeclaration.
  */
 FunctionDeclaration
-  : FN Identifier LPAREN OptFormalParameterList RPAREN BlockStatement
-    {
-      $$ = {
-        type: 'FunctionDeclaration',
-        id: $2,
-        params: $4,
-        body: $6,
-      }
-    }
-  ;
+    : FN Identifier LPAREN OptFormalParameterList RPAREN BlockStatement
+        {
+            $$ = {
+                type: 'FunctionDeclaration',
+                id: $2,
+                params: $4,
+                body: $6,
+            }
+        }
+    ;
 
 /**
  * Optional Identifier.
  */
 OptIdentifier
-  : Identifier
-  | /* empty */ { $$ = null }
-  ;
+    : Identifier
+    | /* empty */ { $$ = null }
+    ;
 
 /**
  * OptFormalParameterList.
  */
 OptFormalParameterList
-  : FormalParameterList
-  | /* empty */ { $$ = [] }
-  ;
+    : FormalParameterList
+    | /* empty */ { $$ = [] }
+    ;
 
 /**
  * FormalParameterList.
  */
 FormalParameterList
-  : Identifier
-    { $$ = [$1] }
-
-  | FormalParameterList COMMA Identifier
-    { $1.push($3); $$ = $1 }
-  ;
+    : Identifier
+        { $$ = [$1] }
+    | FormalParameterList COMMA Identifier
+        { $1.push($3); $$ = $1 }
+    ;
 
 /**
  * IfStatement.
@@ -508,100 +524,100 @@ SequenceExpression
  * VariableDeclaration.
  */
 VariableDeclaration
-  : VariableDeclarationListInit SEMICOLON { $$ = $1 }
-  ;
+    : VariableDeclarationListInit SEMICOLON { $$ = $1 }
+    ;
 
 /**
  * VariableDeclarationListInit.
  */
 VariableDeclarationListInit
-  : LET VariableDeclarationList
-    { $$ = {
-        type: 'VariableDeclaration',
-        declarations: $2,
-      }
-    }
-  ;
+    : LET VariableDeclarationList
+        {
+            $$ = {
+                type: 'VariableDeclaration',
+                declarations: $2,
+            }
+        }
+    ;
 
 /**
  * VariableDeclarationList.
  */
 VariableDeclarationList
-  : VariableDeclarator
-    { $$ = [$1] }
-
-  | VariableDeclarationList COMMA VariableDeclarator
-    { $1.push($3); $$ = $1 }
-  ;
+    : VariableDeclarator
+        { $$ = [$1] }
+    | VariableDeclarationList COMMA VariableDeclarator
+        { $1.push($3); $$ = $1 }
+    ;
 
 /**
  * VariableDeclarator.
  */
 VariableDeclarator
-  : Identifier VariableInitializer
-    { $$ = {
-        type: 'VariableDeclarator',
-        id: $1,
-        init: $2,
-      };
-    }
-  ;
+    : Identifier VariableInitializer
+        {
+            $$ = {
+                type: 'VariableDeclarator',
+                id: $1,
+                init: $2,
+            };
+        }
+    ;
 
 /**
  * VariableInitializer.
  */
 VariableInitializer
-  : SIMPLE_ASSIGN AssignmentExpression
-    { $$ = $2 }
-
-  | /* empty */ { $$ = null }
-  ;
+    : SIMPLE_ASSIGN AssignmentExpression
+        { $$ = $2 }
+    | /* empty */ { $$ = null }
+    ;
 
 /**
  * Literal (numbers, and strings).
  */
 Literal
-  : StringLiteral
-  | NumericLiteral
-  | TRUE   { $$ = Literal('Boolean', true) }
-  | FALSE  { $$ = Literal('Boolean', false) }
-  | NULL   { $$ = Literal('Null', null) }
-  ;
+    : StringLiteral
+    | NumericLiteral
+    | TRUE   { $$ = Literal('Boolean', true) }
+    | FALSE  { $$ = Literal('Boolean', false) }
+    | NULL   { $$ = Literal('Null', null) }
+    ;
 
 /**
  * StringLiteral.
  */
 StringLiteral
-  : STRING { $$ = Literal('String', $1) }
-  ;
+    : STRING { $$ = Literal('String', $1) }
+    ;
 
 /**
  * NumericLiteral.
  */
 NumericLiteral
-  : NUMBER { $$ = Literal('Numeric', Number($1)) }
-  ;
+    : NUMBER { $$ = Literal('Numeric', Number($1)) }
+    ;
 
 /**
  * Primary expression.
  */
 PrimaryExpression
-  : LeftHandSideExpression
-  | NewExpression
-  | Literal
-  | ArrayLiteral
-  | ObjectLiteral
-  | ParenthisizedExpression LambdaTail
-    {
-      // Lambda function.
-      if ($2) {
-        return $$ = LambdaFunction($1, $2);
-      }
+    : LeftHandSideExpression
+    | NewExpression
+    | Literal
+    | ArrayLiteral
+    | ObjectLiteral
+    | ParenthesizedExpression LambdaTail
+        {
+        // Lambda function.
+        if ($2) {
+            return $$ = LambdaFunction($1, $2);
+        }
 
-      // Else, it's just a grouping operator.
-      $$ = $1;
-    }
-  ;
+        // Else, it's just a grouping operator.
+        $$ = $1;
+        }
+    ;
 
 /**
  * New expression;
@@ -684,62 +700,61 @@ ObjectLiteral
  * PropertyList.
  */
 PropertyList
-  : PropertyAssignment
-    { $$ = [$1] }
-
-  | PropertyList COMMA PropertyAssignment
-    { $1.push($3); $$ = $1 }
-  ;
+    : PropertyAssignment
+        { $$ = [$1] }
+    | PropertyList COMMA PropertyAssignment
+        { $1.push($3); $$ = $1 }
+    ;
 
 /**
  * PropertyAssignment.
  */
 PropertyAssignment
-  : PropertyName COLON AssignmentExpression
-    {
-      $$ = {
-        type: 'Property',
-        key: $1,
-        value: $3,
-      }
-    }
-  ;
+    : PropertyName COLON AssignmentExpression
+        {
+            $$ = {
+                type: 'Property',
+                key: $1,
+                value: $3,
+            }
+        }
+    ;
 
 /**
  * PropertyName.
  */
 PropertyName
-  : StringLiteral
-  | Keyword
-  | NumericLiteral
-  | Identifier
-  ;
+    : StringLiteral
+    | Keyword
+    | NumericLiteral
+    | Identifier
+    ;
 
 /**
  * Keyword.
  */
 Keyword
-  : LET
-  | IF
-  | ELSE
-  | TRUE
-  | FALSE
-  | NULL
-  | RETURN
-  | FN
-  | DO
-  | WHILE
-  | FOR
-  | BREAK
-  | CONTINUE
-  ;
+    : LET
+    | IF
+    | ELSE
+    | TRUE
+    | FALSE
+    | NULL
+    | RETURN
+    | FN
+    | DO
+    | WHILE
+    | FOR
+    | BREAK
+    | CONTINUE
+    ;
 
 /**
- * ParenthisizedExpression.
+ * ParenthesizedExpression.
  */
-ParenthisizedExpression
-  : LPAREN Expression RPAREN { $$ = $2 }
-  ;
+ParenthesizedExpression
+    : LPAREN Expression RPAREN { $$ = $2 }
+    ;
 
 /**
  * LambdaTail.
@@ -747,23 +762,23 @@ ParenthisizedExpression
  * This can be either empty, or an arrow of a lambda function.
  */
 LambdaTail
-  : ARROW BlockStatement
-    { $$ = $2 }
-
-  | /* empty */ { $$ = null }
-  ;
+    : ARROW BlockStatement
+        { $$ = $2 }
+    | /* empty */ { $$ = null }
+    ;
 
 /**
  * Identifier.
  */
 Identifier
-  : IDENTIFIER
-    { $$ = {
-        type: 'Identifier',
-        value: $1,
-      }
-    }
-  ;
+    : IDENTIFIER
+        {
+            $$ = {
+                type: 'Identifier',
+                value: $1,
+            }
+        }
+    ;
 
 /**
  * Left-hand side expression.
@@ -773,22 +788,20 @@ Identifier
  * foo.bar = 20;
  */
 LeftHandSideExpression
-  : MemberExpression
-  ;
+    : MemberExpression
+    ;
 
 /**
  * MemberExpression.
  */
 MemberExpression
-  : MemberExpression LBRACKET Expression RBRACKET
-    { $$ = MemberExpression($1, $3)}
-
-  | MemberExpression DOT Identifier
-    { $$ = MemberExpression($1, $3)}
-
-  | Identifier
-  | ThisExpression
-  ;
+    : MemberExpression LBRACKET Expression RBRACKET
+        { $$ = MemberExpression($1, $3)}
+    | MemberExpression DOT Identifier
+        { $$ = MemberExpression($1, $3)}
+    | Identifier
+    | ThisExpression
+    ;
 
 /**
  * Assignment expression.
@@ -802,24 +815,25 @@ MemberExpression
  * x -= y
  */
 AssignmentExpression
-  : LogicalORExpression
-  | LeftHandSideExpression AssignmentOperator AssignmentExpression
-    { $$ = {
-        type: 'AssignmentExpression',
-        left: $1,
-        operator: $2,
-        right: $3,
-      }
-    }
-  ;
+    : LogicalORExpression
+    | LeftHandSideExpression AssignmentOperator AssignmentExpression
+        {
+            $$ = {
+                type: 'AssignmentExpression',
+                left: $1,
+                operator: $2,
+                right: $3,
+            }
+        }
+    ;
 
 /**
  * AssignmentOperator: =, *=, /=, +=, -=.
  */
 AssignmentOperator
-  : SIMPLE_ASSIGN
-  | COMPLEX_ASSIGN
-  ;
+    : SIMPLE_ASSIGN
+    | COMPLEX_ASSIGN
+    ;
 
 /**
  * Logical OR expression.
@@ -827,10 +841,10 @@ AssignmentOperator
  * x || y
  */
 LogicalORExpression
-  : LogicalANDExpression
-  | LogicalORExpression LOGICAL_OR LogicalANDExpression
-      { $$ = LogicalExpression($1, $2, $3) }
-  ;
+    : LogicalANDExpression
+    | LogicalORExpression LOGICAL_OR LogicalANDExpression
+        { $$ = LogicalExpression($1, $2, $3) }
+    ;
 
 /**
  * Logical AND expression.
@@ -838,10 +852,10 @@ LogicalORExpression
  * x && y
  */
 LogicalANDExpression
-  : EqualityExpression
-  | LogicalANDExpression LOGICAL_AND EqualityExpression
-      { $$ = LogicalExpression($1, $2, $3) }
-  ;
+    : EqualityExpression
+    | LogicalANDExpression LOGICAL_AND EqualityExpression
+        { $$ = LogicalExpression($1, $2, $3) }
+    ;
 
 /**
  * Equality expressions.
@@ -852,10 +866,10 @@ LogicalANDExpression
  * x != y
  */
 EqualityExpression
-  : RelationalExpression
-  | EqualityExpression EQUALITY_OPERATOR RelationalExpression
-      { $$ = BinaryExpression($1, $2, $3) }
-  ;
+    : RelationalExpression
+    | EqualityExpression EQUALITY_OPERATOR RelationalExpression
+        { $$ = BinaryExpression($1, $2, $3) }
+    ;
 
 /**
  * Relational expressions.
@@ -868,10 +882,10 @@ EqualityExpression
  * x <= y
  */
 RelationalExpression
-  : AdditiveExpression
-  | RelationalExpression RELATIONAL_OPERATOR AdditiveExpression
-      { $$ = BinaryExpression($1, $2, $3) }
-  ;
+    : AdditiveExpression
+    | RelationalExpression RELATIONAL_OPERATOR AdditiveExpression
+        { $$ = BinaryExpression($1, $2, $3) }
+    ;
 
 /**
  * Additive expressions.
@@ -882,10 +896,10 @@ RelationalExpression
  * x - y
  */
 AdditiveExpression
-  : MultiplicativeExpression
-  | AdditiveExpression ADDITIVE_OPERATOR MultiplicativeExpression
-      { $$ = BinaryExpression($1, $2, $3) }
-  ;
+    : MultiplicativeExpression
+    | AdditiveExpression ADDITIVE_OPERATOR MultiplicativeExpression
+        { $$ = BinaryExpression($1, $2, $3) }
+    ;
 
 /**
  * Additive expressions.
@@ -896,20 +910,20 @@ AdditiveExpression
  * x / y
  */
 MultiplicativeExpression
-  : UnaryExpression
-  | MultiplicativeExpression MULTIPLICATIVE_OPERATOR UnaryExpression
-      { $$ = BinaryExpression($1, $2, $3) }
-  ;
+    : UnaryExpression
+    | MultiplicativeExpression MULTIPLICATIVE_OPERATOR UnaryExpression
+        { $$ = BinaryExpression($1, $2, $3) }
+    ;
 
 /**
  * Unary expression.
  */
 UnaryExpression
-  : PrimaryExpression
-  | CallExpression
-  | ADDITIVE_OPERATOR UnaryExpression
-    { $$ = UnaryExpression($1, $2) }
-  ;
+    : PrimaryExpression
+    | CallExpression
+    | ADDITIVE_OPERATOR UnaryExpression
+        { $$ = UnaryExpression($1, $2) }
+    ;
 
 /**
  * CallExpression.
