@@ -602,22 +602,22 @@ NumericLiteral
  * Primary expression.
  */
 PrimaryExpression
-  : LeftHandSideExpression
-  | NewExpression
-  | Literal
-  | ArrayLiteral
-  | ObjectLiteral
-  | ParenthesizedExpression LambdaTail
-    {
-      // Lambda function.
-      if ($2) {
-        return $$ = LambdaFunction($1, $2);
-      }
+    : LeftHandSideExpression
+    | NewExpression
+    | Literal
+    | ArrayLiteral
+    | ObjectLiteral
+    | ParenthesizedExpression LambdaTail
+        {
+        // Lambda function.
+        if ($2) {
+            return $$ = LambdaFunction($1, $2);
+        }
 
-      // Else, it's just a grouping operator.
-      $$ = $1;
-    }
-  ;
+        // Else, it's just a grouping operator.
+        $$ = $1;
+        }
+    ;
 
 /**
  * New expression;
