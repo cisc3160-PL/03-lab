@@ -1,0 +1,13 @@
+// Variable declarations
+let x, y, z;
+
+// Variable simple assignments
+x = 10;
+y = 5;
+z = 25;
+
+// Variable complex assignments
+x += 2;
+y -= 2;
+z *= 2;
+x /= 2;

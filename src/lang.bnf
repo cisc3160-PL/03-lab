@@ -1,5 +1,7 @@
 /**
  * BNF grammar
+ *
+ * https://github.com/DmitrySoshnikov/syntax/blob/master/examples/lang.bnf
  */
 
 %{

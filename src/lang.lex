@@ -1,5 +1,7 @@
 /**
  * Lexical grammar
+ * 
+ * https://github.com/DmitrySoshnikov/syntax/blob/master/examples/lang.lex
  */
 
 {
@@ -10,7 +12,7 @@
     rules: [
         ["\\/\\/.*",                `/* skip comments */`],
         ["\/\\*[\\s\\S]*?\\*\/",    `/* skip comments */`],
-        [`\\s+`,                `/* skip whitespace */`],
+        [`\\s+`,                    `/* skip whitespace */`],
 
         /* ------------ Keywords ------------ */
 
