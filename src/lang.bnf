@@ -508,54 +508,54 @@ SequenceExpression
  * VariableDeclaration.
  */
 VariableDeclaration
-  : VariableDeclarationListInit SEMICOLON { $$ = $1 }
-  ;
+    : VariableDeclarationListInit SEMICOLON { $$ = $1 }
+    ;
 
 /**
  * VariableDeclarationListInit.
  */
 VariableDeclarationListInit
-  : LET VariableDeclarationList
-    { $$ = {
-        type: 'VariableDeclaration',
-        declarations: $2,
-      }
-    }
-  ;
+    : LET VariableDeclarationList
+        {
+            $$ = {
+                type: 'VariableDeclaration',
+                declarations: $2,
+            }
+        }
+    ;
 
 /**
  * VariableDeclarationList.
  */
 VariableDeclarationList
-  : VariableDeclarator
-    { $$ = [$1] }
-
-  | VariableDeclarationList COMMA VariableDeclarator
-    { $1.push($3); $$ = $1 }
-  ;
+    : VariableDeclarator
+        { $$ = [$1] }
+    | VariableDeclarationList COMMA VariableDeclarator
+        { $1.push($3); $$ = $1 }
+    ;
 
 /**
  * VariableDeclarator.
  */
 VariableDeclarator
-  : Identifier VariableInitializer
-    { $$ = {
-        type: 'VariableDeclarator',
-        id: $1,
-        init: $2,
-      };
-    }
-  ;
+    : Identifier VariableInitializer
+        {
+            $$ = {
+                type: 'VariableDeclarator',
+                id: $1,
+                init: $2,
+            };
+        }
+    ;
 
 /**
  * VariableInitializer.
  */
 VariableInitializer
-  : SIMPLE_ASSIGN AssignmentExpression
-    { $$ = $2 }
-
-  | /* empty */ { $$ = null }
-  ;
+    : SIMPLE_ASSIGN AssignmentExpression
+        { $$ = $2 }
+    | /* empty */ { $$ = null }
+    ;
 
 /**
  * Literal (numbers, and strings).
@@ -773,22 +773,20 @@ Identifier
  * foo.bar = 20;
  */
 LeftHandSideExpression
-  : MemberExpression
-  ;
+    : MemberExpression
+    ;
 
 /**
  * MemberExpression.
  */
 MemberExpression
-  : MemberExpression LBRACKET Expression RBRACKET
-    { $$ = MemberExpression($1, $3)}
-
-  | MemberExpression DOT Identifier
-    { $$ = MemberExpression($1, $3)}
-
-  | Identifier
-  | ThisExpression
-  ;
+    : MemberExpression LBRACKET Expression RBRACKET
+        { $$ = MemberExpression($1, $3)}
+    | MemberExpression DOT Identifier
+        { $$ = MemberExpression($1, $3)}
+    | Identifier
+    | ThisExpression
+    ;
 
 /**
  * Assignment expression.
@@ -802,24 +800,25 @@ MemberExpression
  * x -= y
  */
 AssignmentExpression
-  : LogicalORExpression
-  | LeftHandSideExpression AssignmentOperator AssignmentExpression
-    { $$ = {
-        type: 'AssignmentExpression',
-        left: $1,
-        operator: $2,
-        right: $3,
-      }
-    }
-  ;
+    : LogicalORExpression
+    | LeftHandSideExpression AssignmentOperator AssignmentExpression
+        {
+            $$ = {
+                type: 'AssignmentExpression',
+                left: $1,
+                operator: $2,
+                right: $3,
+            }
+        }
+    ;
 
 /**
  * AssignmentOperator: =, *=, /=, +=, -=.
  */
 AssignmentOperator
-  : SIMPLE_ASSIGN
-  | COMPLEX_ASSIGN
-  ;
+    : SIMPLE_ASSIGN
+    | COMPLEX_ASSIGN
+    ;
 
 /**
  * Logical OR expression.
